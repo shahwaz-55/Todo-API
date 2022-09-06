@@ -1,8 +1,13 @@
 const express = require('express').Router();
-const router = express.Router();
+//const router = express.Router();
 const Todo = require('../models/todo');
+const app= express();
+
+app.use(express.json());
+
 
 //List all todo
+
 router.get('/', (req, res) => {
     Todo.find().exec((err, todos) => {
         if (err) {
@@ -15,7 +20,7 @@ router.get('/', (req, res) => {
 
 
 // create a todo
-router.post('/create', (req, res) => {
+app.post('/create', (req, res) => {
     const todo = Todo({
         title: req.body.title,
         content: req.body.content,

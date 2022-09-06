@@ -17,6 +17,7 @@ app.get('/todo', todoRoutes);
 
 mongoose.connect(DATABASE_URL, {useNewUrlparser: true })
  .then(() => {
+   
     console.log('Database connection successful');
     app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
  })
