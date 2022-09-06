@@ -1,9 +1,5 @@
-const express = require('express').Router();
-//const router = express.Router();
+const router = require('express').Router();
 const Todo = require('../models/todo');
-const app= express();
-
-app.use(express.json());
 
 
 //List all todo
@@ -20,7 +16,7 @@ router.get('/', (req, res) => {
 
 
 // create a todo
-app.post('/create', (req, res) => {
+router.post('/create', (req, res) => {
     const todo = Todo({
         title: req.body.title,
         content: req.body.content,
@@ -37,24 +33,21 @@ app.post('/create', (req, res) => {
 //edit a todo
 router.put('/:id', (req,res) => {
     Todo.findById(req.params.id)
-     .exec((err, todo) => {
+    .exec((err, todo) => {
+      if (err) {
+        return res.json({ error: err });
+      }
+      todo.title = req.body.title ?? todo.title;
+      todo.content = req.body.content ?? todo.content;
+      todo.completed = req.body.completed ?? todo.completed;
+      todo.save((err, todo) => {
         if (err) {
-            return res.json({ error: err });
+          return res.json({ error: err });
         }
-        todo.title = req.body.title ?? todo.title;
-        todo.content = req.body.content ?? todo.content;
-        todo.completed = req.body.completed ?? todo.completed;
-        todo.save((err, todo) =>{
-            if (err) {
-                return res.json({ error: err });
-            }
-
-            return res.json({ error: err });
-        })
-
-     });
-
+        return res.json({ data: todo });
+    })
 });
+     });
 
 
 //delete a todo 

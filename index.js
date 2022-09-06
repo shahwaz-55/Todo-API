@@ -12,13 +12,12 @@ const DATABASE_URL = process.env.DATABASE_URL;
 app.use(express.json());
 
 app.get('/', (req, res) => res.json({ 'message': 'Server is running' }));
-app.get('/todo', todoRoutes);
+app.use('/todo', todoRoutes);
 
 
 mongoose.connect(DATABASE_URL, {useNewUrlparser: true })
  .then(() => {
-   
-    console.log('Database connection successful');
+      console.log('Database connection successful');
     app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
  })
  .catch((err) => {
